@@ -67,7 +67,7 @@ public class ants {
             	
             	//TODO: make a data structure
               //  statesNum++;
-            	Gene gene = new Gene(s.charAt(0), s.substring(1,4), s.substring(5,8));
+            	Gene gene = new Gene(s.charAt(0), s.substring(1,5), s.substring(5,9));
             	genes.add(gene);
             }
             //lastDir
@@ -110,12 +110,19 @@ public class ants {
     			   g = x;  //this is our gene of interest
     		   }
     	   }
+
+    	   
     	   char nextDirection = g.getAction(lastDir);
     	   char newState = g.getNextState(lastDir);
+    	   
     	 //update hashtable with new state
            visited.put(loc, newState); //add the state of the location to the hashmap
-    	   System.out.println("Move in direction "+ nextDirection);
+           System.out.println("Arrived in direction "+ lastDir);
+           System.out.println("Next direction is "+ nextDirection);
+           System.out.println("Old state was "+ state);
     	   System.out.println("New state of "+ loc + " is " + newState);
+    	   System.out.println();
+    	   
             if(nextDirection == 'N'){  //if came from North
             	//go in direction g.actions(lastDir) and set state to g.
                 loc.translate(0, 1);
