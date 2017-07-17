@@ -1,3 +1,5 @@
+//package ants;
+
 /*
  * Etude 1: Ants on a Plane
  * 
@@ -53,9 +55,9 @@ public class ants {
                 }else{ //If we find an integer, we use it as the number of moves we calculate. 
                      calcMove(sc.nextInt());
                  }             
-           }else{
-                 sc.nextLine();
-           }
+            }else{
+                 //sc.nextLine();
+            }
 		}
 		sc.close();          
 	}
@@ -71,7 +73,7 @@ public class ants {
             	Gene gene = new Gene(s.charAt(0), s.substring(1,5), s.substring(5,9));
             	genes.add(gene);
             }
-            scan.close(); 
+            scan.close();
             
            //System.out.println("Initial location: " + loc);
             
@@ -87,8 +89,19 @@ public class ants {
                 movement(state);
             }
             
-            System.out.println(dna); //TODO: this needs to be spaced as input is. 
-            System.out.println("# " + (int)loc.getX() + " "+ (int)loc.getY());          
+				
+
+
+            //System.out.println(dna); //TODO: this needs to be spaced as input is. 
+            for (int i = 0; i < genes.size(); i++){
+					
+					System.out.println(genes.get(i).currState + " " + 
+							  genes.get(i).actions + " " + 
+							  genes.get(i).nextStates);
+				}
+				System.out.println(stop);
+				System.out.println("# " + (int)loc.getX() + " "+ (int)loc.getY());
+				System.out.println();
         }
        
        /*
