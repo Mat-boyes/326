@@ -1,10 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package cosc326;
-
 
 /*
  * Etude 1: Ants on a Plane
@@ -19,9 +12,9 @@ import java.util.*;
 
 public class ants {
     
-        private String dna;
+        private String dna = "";
         private Point loc = new Point(0,0);
-        private HashMap visited = new HashMap();
+        private HashMap<Point, Character> visited = new HashMap<Point, Character>();
 	
 	public ants(){
 	}
@@ -32,37 +25,36 @@ public class ants {
 	
 	public void start(){
 		Scanner sc = new Scanner(System.in);
-                
-                while(sc.hasNextLine()){
-                    
-                    if(!sc.hasNext("#")){
-                        if(!sc.hasNextInt()){
-                            for (int i = 0; i < 3; i++){
-                                dna += sc.next();
-                            }
-                            dna += "\n";
-                        }else{
-                            calcMove(sc.nextInt());
-                        }
-                        
-                        
-			
-                    }else{
-                        sc.nextLine();
-                    }
+        while(sc.hasNextLine()){
+            if(!sc.hasNext("#")){
+                if(!sc.hasNextInt()){
+                	//TODO: double check this doesnt need to be hasNext
+                   for (int i = 0; i < 3; i++){ 
+                       dna += sc.next();
+                   }
+                   dna += "\n";
+                }else{
+                	 System.out.println(dna);
+                     calcMove(sc.nextInt());
+                 }             
+           }else{
+                 sc.nextLine();
+           }
 		}
 		sc.close(); 
                 
 	}
+
         
-        public void calcMove(int stop){
+       public void calcMove(int stop){
             int statesNum = 0;
             int lastDir;
-            Object state;
+            char state;
             
             Scanner scan = new Scanner(dna);
             while(scan.hasNextLine()){
                 statesNum++;
+                System.out.println(statesNum);
             }
             scan.reset();
             char[] states = new char[statesNum];
@@ -92,6 +84,6 @@ public class ants {
         
         public void movement(){
             loc.move(0, 0);
-        }
+        } 
 	
 }
