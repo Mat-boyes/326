@@ -16,7 +16,7 @@ public class ants {
         private String dna = "";
         private Point loc = new Point(0,0);
         private HashMap<Point, Character> visited = new HashMap<Point, Character>();
-        private int lastDir = 0;
+        private int lastDir = 0; //0 = north, 1= east, 2=south, 3=west
 
 	public ants(){
 	}
@@ -37,7 +37,7 @@ public class ants {
                    dna += "\n";
                 }else{
                      //scanned in an integer  
-                	 System.out.println(dna);
+                	// System.out.println(dna);
                 	 
                      calcMove(sc.nextInt());
                  }             
@@ -53,54 +53,136 @@ public class ants {
         //    int statesNum = 0;
             char state;
            // char[] states = new char[statesNum];
-            ArrayList<Character> states = new ArrayList<Character>(); 
+       //     ArrayList<Character> states = new ArrayList<Character>();
+            ArrayList<Gene> genes = new ArrayList<Gene>();
+            
             
             Scanner scan = new Scanner(dna);
             while(scan.hasNextLine()){ //scan each line of the DNA 
-            	states.add(scan.nextLine().charAt(0));
+            	String s = scan.nextLine();
+            //	char c = s.charAt(0);
+            	//String s1 = s.substring(1,4);
+            	//String s2 = s.substring(5,8);
+            //	states.add(s.charAt(0));
+            	
+            	
             	//TODO: make a data structure
               //  statesNum++;
+            	Gene gene = new Gene(s.charAt(0), s.substring(1,4), s.substring(5,8));
+            	genes.add(gene);
+            }
+            //lastDir
+            for(Gene g : genes){
+            	System.out.println(g.getAction(lastDir)+" " + g.getNextState(lastDir));
             }
             scan.close(); 
+            
+            System.out.println("Initial location: " + loc);
             
            
             for(int i = 0; i < stop; i++){ //for each step we need to make 
                 if(visited.get(loc) != null){ //if HAS been visited
-                	
                     state = visited.get(loc); //get the state of that location 
-                    System.out.println(state);
+                 //   System.out.println(state);
+                }else{//if it has NOT been visited, just use first state. 
+                	state = (genes.get(0)).getCurrentState();
                 }
-                
-                //movement(state, lastDir);
-                
-                //UPDATE 
-                visited.put(loc, states.get(lastDir)); //add the state of the location to the hashmap
+             //   System.out.println("State: " + state);
+                //pass the state of the location and the direction coming from
+                movement(state, lastDir);
+   
+                //UPDATE = state of new location is the currentstate of the last direction?          
+                visited.put(loc, genes.get(lastDir).getCurrentState()); //add the state of the location to the hashmap
             }
                 
-            System.out.println(loc);
+            System.out.println("End location: " + loc);
             
         }
-        
-      /*  public void movement(char state, int lastDir){
+       
+       public void movement(char state, int lastDir){
+           //input state is the state to react to. 
+    	   //input lastDir is the direction I've come from 0-3
+    	   
+    	   //index of current state in dna
+           // int starter =dna.indexOf(state);
             
+            //adds last direction to the state 
+            //starter += lastDir +1;
+            //char c = dna.charAt(starter); 
+    	   
+    	  
+    	  
+            if(lastDir==0){  //if came from North
+                loc.translate(0, 1);
+                System.out.println("here!");
+            //    lastDir = 0;
+                
+            }else if(lastDir==1){
+                loc.translate(1, 0);
+              //  lastDir = 1;
+            }else if(lastDir==3){
+                loc.translate(0, -1);
+               // lastDir = 2;
+            }else{
+                loc.translate(-1, 0);
+               // lastDir = 3;
+            }
+            
+         
+        }
+        
+      /*public void movement(char state, int lastDir){
+            
+    	   //index of current state in dna
             int starter =dna.indexOf(state);
             
+            //adds last direction to the state 
             starter += lastDir +1;
-            if(dna.charAt(starter) == "N"){
-                loc.move(0, 0);
+            //char c = dna.charAt(starter); 
+            if(dna.charAt(starter) == 'N'){
+                loc.move(0, 1);
                 lastDir = 0;
-            }else if((dna.charAt(starter)).equals("E")){
-                loc.move(0, 0);
+            }else if(dna.charAt(starter) == 'E'){
+                loc.move(1, 0);
                 lastDir = 1;
-            }else if(dna.charAt(starter).equals("S")){
-                loc.move(0, 0);
+            }else if(dna.charAt(starter) == 'S'){
+                loc.move(0, -1);
                 lastDir = 2;
             }else{
-                loc.move(0, 0);
+                loc.move(-1, 0);
                 lastDir = 3;
             }
             
             loc.move(0, 0);
-        }   
-	*/
+        }    */
+       
+       public class Gene{
+    	   //(char currState, String actions, String nextStates)
+    	   private char currState;
+    	   private String actions;
+    	   private String nextStates;
+    	   
+    	   public Gene(char currState, String actions, String nextStates){
+    		   this.currState = currState;
+    		   this.actions = actions;
+    		   this.nextStates = nextStates; 
+    	   }
+    	   
+    	   public char getCurrentState(){
+    		   return currState; 
+    	   }
+    	   
+    	   public char getAction(int position){
+    		   //0 = N, 1= E, 2 = S, 3 = W
+    		   return actions.charAt(position);
+    	   }
+    	   
+    	   public char getNextState(int position){
+    		   return nextStates.charAt(position);
+    	   }
+       }
+  
+       
+      
 }
+
