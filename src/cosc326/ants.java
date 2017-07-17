@@ -35,7 +35,9 @@ public class ants {
                    }
                    dna += "\n";
                 }else{
+                     //scanned in an integer  
                 	 System.out.println(dna);
+                	 
                      calcMove(sc.nextInt());
                  }             
            }else{
@@ -45,49 +47,42 @@ public class ants {
 		sc.close(); 
                 
 	}
-
+		//calculate the location in which we end up after stop moves. 
        public void calcMove(int stop){
-            int statesNum = 0;
+        //    int statesNum = 0;
             char state;
+           // char[] states = new char[statesNum];
+            ArrayList<Character> states = new ArrayList<Character>(); 
             
             Scanner scan = new Scanner(dna);
-            while(scan.hasNextLine()){
-                statesNum++;
-                System.out.println(statesNum);
+            while(scan.hasNextLine()){ //scan each line of the DNA 
+            	states.add(scan.nextLine().charAt(0));
+            	//TODO: make a data structure
+              //  statesNum++;
             }
-            scan.reset();
-            char[] states = new char[statesNum];
-            
-            for (int i = 0; i < statesNum; i++){
-                states[i] = scan.next().charAt(0);
-                scan.nextLine();
-            }
-            
-            scan.reset();
+            scan.close(); 
             
             for(int i = 0; i < stop; i++){
                 if(visited.get(loc) != null){
-                    state = visited.get(loc);
+                  //  state = visited.get(loc);
                 }
                 
-                movement(state, lastDir);
+                //movement(state, lastDir);
                 
-                visited.put(loc, states[lastDir]);
-                             
-                
+               // visited.put(loc, states[lastDir]);
             }
                 
             
             
         }
         
-        public void movement(char state, int lastDir){
+      /*  public void movement(char state, int lastDir){
             
             int starter =dna.indexOf(state);
             
             dna.
             
             loc.move(0, 0);
-        } 
+        } */ 
 	
 }
