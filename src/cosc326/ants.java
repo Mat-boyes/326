@@ -15,7 +15,8 @@ public class ants {
         private String dna = "";
         private Point loc = new Point(0,0);
         private HashMap<Point, Character> visited = new HashMap<Point, Character>();
-	
+        private int lastDir = 0;
+
 	public ants(){
 	}
 	
@@ -47,7 +48,6 @@ public class ants {
 
        public void calcMove(int stop){
             int statesNum = 0;
-            int lastDir;
             char state;
             
             Scanner scan = new Scanner(dna);
@@ -64,13 +64,13 @@ public class ants {
             }
             
             scan.reset();
-            lastDir = 0;
+            
             for(int i = 0; i < stop; i++){
                 if(visited.get(loc) != null){
                     state = visited.get(loc);
                 }
                 
-                movement();
+                movement(state, lastDir);
                 
                 visited.put(loc, states[lastDir]);
                              
@@ -81,7 +81,12 @@ public class ants {
             
         }
         
-        public void movement(){
+        public void movement(char state, int lastDir){
+            
+            int starter =dna.indexOf(state);
+            
+            dna.
+            
             loc.move(0, 0);
         } 
 	
