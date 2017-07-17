@@ -12,6 +12,7 @@ import java.util.*;
 
 public class ants {
     
+	//TODO: add to constructor 
         private String dna = "";
         private Point loc = new Point(0,0);
         private HashMap<Point, Character> visited = new HashMap<Point, Character>();
@@ -62,10 +63,11 @@ public class ants {
             }
             scan.close(); 
             
-            for(int i = 0; i < stop; i++){
-                if(visited.get(loc) != null){
+           
+            for(int i = 0; i < stop; i++){ //for each step we need to make 
+                if(visited.get(loc) != null){ //if HAS been visited
                 	
-                    state = visited.get(loc);
+                    state = visited.get(loc); //get the state of that location 
                     System.out.println(state);
                 }
                 
