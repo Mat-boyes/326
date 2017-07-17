@@ -45,7 +45,6 @@ public class ants {
                 
 	}
 
-        
        public void calcMove(int stop){
             int statesNum = 0;
             int lastDir;
