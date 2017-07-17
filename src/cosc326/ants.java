@@ -64,12 +64,15 @@ public class ants {
             
             for(int i = 0; i < stop; i++){
                 if(visited.get(loc) != null){
-                  //  state = visited.get(loc);
+                	
+                    state = visited.get(loc);
+                    System.out.println(state);
                 }
                 
                 //movement(state, lastDir);
                 
-               // visited.put(loc, states[lastDir]);
+                //UPDATE 
+                visited.put(loc, states.get(lastDir)); //add the state of the location to the hashmap
             }
                 
             
