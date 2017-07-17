@@ -75,7 +75,7 @@ public class ants {
                 visited.put(loc, states.get(lastDir)); //add the state of the location to the hashmap
             }
                 
-            
+            System.out.println(loc);
             
         }
         
@@ -83,9 +83,22 @@ public class ants {
             
             int starter =dna.indexOf(state);
             
-            dna.
+            starter += lastDir +1;
+            if(dna.charAt(starter) == "N"){
+                loc.move(0, 0);
+                lastDir = 0;
+            }else if((dna.charAt(starter)).equals("E")){
+                loc.move(0, 0);
+                lastDir = 1;
+            }else if(dna.charAt(starter).equals("S")){
+                loc.move(0, 0);
+                lastDir = 2;
+            }else{
+                loc.move(0, 0);
+                lastDir = 3;
+            }
             
             loc.move(0, 0);
-        } */ 
-	
+        }   
+	*/
 }
