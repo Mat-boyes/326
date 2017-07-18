@@ -35,9 +35,14 @@ public class ants {
 		Scanner sc = new Scanner(System.in);
 		ants ant = new ants(); 
 		while(sc.hasNextLine()){
-			String s = sc.nextLine();
+			String s = sc.nextLine(), hold = "";
 			if(Character.isDigit(s.charAt(0))){ //If we scan in a number, we have finished scanning DNA for this scenario. 
-				int numMoves = Character.getNumericValue(s.charAt(0)); 
+				for(int i = 0; i < s.length(); i++){
+					hold += s.charAt(i);
+					
+				}
+				s = hold;
+				int numMoves = Integer.parseInt(s);  
             	calcMove(numMoves);
             	
             	printGenes(); 
