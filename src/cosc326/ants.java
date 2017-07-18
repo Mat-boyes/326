@@ -29,35 +29,41 @@ public class ants {
 	}
 	
 	/*
-	 * Main method creates instance of ants and calls the start method on it.  
+	 * Main method scans in input for the DNA of each ant scenario.   
 	 */
 	public static void main(String[]args){
 		Scanner sc = new Scanner(System.in);
 		ants ant = new ants(); 
 		while(sc.hasNextLine()){
 			String s = sc.nextLine();
-			if(Character.isDigit(s.charAt(0))){
-				int numMoves = Character.getNumericValue(s.charAt(0));
+			if(Character.isDigit(s.charAt(0))){ //If we scan in a number, we have finished scanning DNA for this scenario. 
+				int numMoves = Character.getNumericValue(s.charAt(0)); 
             	calcMove(numMoves);
+            	
             	printGenes(); 
 	     		System.out.println(numMoves);
 	     		System.out.println("# " + (int)loc.getX() + " "+ (int)loc.getY());
 	     		System.out.println();
-	     		ant = new ants(); 
+	     		
+	     		ant = new ants(); //Reset the ant for a new scenario
 			}
-			else if(!s.contains("#")){
+			else if(!s.contains("#")){ //Ignore lines with # comments
         		Scanner sc2 = new Scanner(s);
         		char state = sc2.next().charAt(0);
             	String actions = sc2.next();
             	String result  = sc2.next();
             	sc2.close();
-            	Gene gene = new Gene(state, actions, result);
-           	   	genes.add(gene);
+            	
+            	Gene gene = new Gene(state, actions, result); //Create a new gene
+           	   	genes.add(gene); //Add it to the DNA of this ant scenario
         	}
 		}
 		sc.close();   
 	}
 	
+	/*
+	 * Prints the contents of an ant's genes. 
+	 */
 	public static void printGenes(){
 		if(genes.isEmpty()){
 			System.out.println("No genes!");
