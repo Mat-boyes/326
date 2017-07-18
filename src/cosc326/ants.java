@@ -18,14 +18,14 @@ import java.util.*;
 
 public class ants {
     
-        private String dna;
+     //   private String dna;
         private Point loc;
         private HashMap<Point, Character> visited;
         private int lastDir;
         private ArrayList<Gene> genes;
 
 	public ants(){
-		dna = "";
+	//	dna = "";
 		loc = new Point(0,0);
 		visited = new HashMap<Point, Character>();
 		lastDir = 0; //0 = north, 1= east, 2=south, 3=west
@@ -44,20 +44,36 @@ public class ants {
 	 */
 	public void start(){
 		Scanner sc = new Scanner(System.in);
+		//int count = 0; 
         while(sc.hasNextLine()){
-            if(!sc.hasNext("#")){
-                if(!sc.hasNextInt()){
-                	//TODO: double check this doesnt need to be hasNext
-                   for (int i = 0; i < 3; i++){ 
-                       dna += sc.next();
-                   }
-                   dna += "\n";
-                }else{ //If we find an integer, we use it as the number of moves we calculate. 
-                     calcMove(sc.nextInt());
-                 }             
-            }else{
+            if(!sc.hasNextInt()){ 
+            	String s = sc.nextLine(); 
+            	
+            	if(s.contains("#")){
+            		System.out.println("contains a #");
+            		//should skip this line. 
+            	}else{
+            		Scanner sc2 = new Scanner(s);
+            		char state = sc2.next().charAt(0);
+                	String actions = sc2.next();
+                	String result  = sc2.next();
+                   
+                //	System.out.println("Test: " + state + " " + actions + " " + result);
+
+               	 //  Gene gene = new Gene(s.charAt(0), s.substring(2,6), s.substring(6,11));
+                	Gene gene = new Gene(state, actions, result);
+               	   	genes.add(gene);
+            	}
+            	
+            }else{ //If we find an integer, we use it as the number of moves we calculate. 
+            	// System.out.println(dna);
+                 calcMove(sc.nextInt());
+             }             
+            //}else{
                  //sc.nextLine();
-            }
+            //}
+        //    System.out.println("Count " + count);
+          //  count++; 
 		}
 		sc.close();          
 	}
@@ -67,13 +83,13 @@ public class ants {
 		 */
        public void calcMove(int stop){
             char state;
-            Scanner scan = new Scanner(dna);
+         /*   Scanner scan = new Scanner(dna);
             while(scan.hasNextLine()){ //scan each line of the DNA 
             	String s = scan.nextLine();
             	Gene gene = new Gene(s.charAt(0), s.substring(1,5), s.substring(5,9));
             	genes.add(gene);
             }
-            scan.close();
+            scan.close();*/
             
            //System.out.println("Initial location: " + loc);
             
@@ -88,26 +104,21 @@ public class ants {
                 //pass the state of the location to movement
                 movement(state);
             }
-            
-				
 
-
-            //System.out.println(dna); //TODO: this needs to be spaced as input is. 
-            for (int i = 0; i < genes.size(); i++){
-					
-					System.out.println(genes.get(i).currState + " " + 
-							  genes.get(i).actions + " " + 
-							  genes.get(i).nextStates);
-				}
-				System.out.println(stop);
-				System.out.println("# " + (int)loc.getX() + " "+ (int)loc.getY());
-				System.out.println();
+            for (Gene i: genes){
+				System.out.println(i.currState + " " + i.actions + " " + i.nextStates);
+			}
+			System.out.println(stop);
+			System.out.println("# " + (int)loc.getX() + " "+ (int)loc.getY());
+		//	System.out.println();
 	       
-	      dna = "";
+				
+		//Resetting?
+	   //   dna = "";
 	      loc = new Point(0,0);
-		visited = new HashMap<Point, Character>();
-		lastDir = 0; //0 = north, 1= east, 2=south, 3=west
-		genes = new ArrayList<Gene>(); //list of genes
+	      visited = new HashMap<Point, Character>();
+	      lastDir = 0; //0 = north, 1= east, 2=south, 3=west
+	      genes = new ArrayList<Gene>(); //list of genes
         }
        
        /*
