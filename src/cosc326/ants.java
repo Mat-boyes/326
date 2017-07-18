@@ -1,5 +1,3 @@
-//package ants;
-
 /*
  * Etude 1: Ants on a Plane
  * 
@@ -18,14 +16,12 @@ import java.util.*;
 
 public class ants {
     
-     //   private String dna;
-        private Point loc;
-        private HashMap<Point, Character> visited;
-        private int lastDir;
-        private ArrayList<Gene> genes;
+        private static Point loc;
+        private static HashMap<Point, Character> visited;
+        private static int lastDir;
+        private static ArrayList<Gene> genes;
 
 	public ants(){
-	//	dna = "";
 		loc = new Point(0,0);
 		visited = new HashMap<Point, Character>();
 		lastDir = 0; //0 = north, 1= east, 2=south, 3=west
@@ -36,15 +32,56 @@ public class ants {
 	 * Main method creates instance of ants and calls the start method on it.  
 	 */
 	public static void main(String[]args){
-		new ants().start(); 
+		//new ants().start(); 
+		Scanner sc = new Scanner(System.in);
+		ants ant = new ants(); 
+		//Change this condition to until we hit a number! do while? 
+        while(sc.hasNextLine()){
+            if(!sc.hasNextInt()){ 
+            	String s = sc.nextLine(); 
+            	
+            	if(!s.contains("#")){
+            		//System.out.println("contains a #");
+            		//should skip this line. 
+            	
+            		Scanner sc2 = new Scanner(s);
+            		char state = sc2.next().charAt(0);
+                	String actions = sc2.next();
+                	String result  = sc2.next();
+                	
+                	Gene gene = new Gene(state, actions, result);
+               	   	genes.add(gene);
+            	}
+            }else{ //If we find an integer, we use it as the number of moves we calculate. 
+                int numMoves = sc.nextInt();
+            	calcMove(numMoves);
+            	printGenes(); 
+	     		System.out.println(numMoves);
+	     		System.out.println("# " + (int)loc.getX() + " "+ (int)loc.getY());
+	     		//Resetting variables... should we just be recalling the constructor?
+              /*   loc = new Point(0,0);
+	       	     visited = new HashMap<Point, Character>();
+	       	     lastDir = 0; //0 = north, 1= east, 2=south, 3=west
+	       	     genes = new ArrayList<Gene>(); //list of genes*/
+	     		ant = new ants(); 
+             }             
+		}
+		sc.close();   
+	}
+	
+	public static void printGenes(){
+		 for (Gene i: genes){
+  			System.out.println(i.currState + " " + i.actions + " " + i.nextStates);
+  		}
 	}
 	
 	/*
 	 * Start the program by scanning in input and calculating the final location of the ant. 
 	 */
-	public void start(){
+/*	public void start(){
 		Scanner sc = new Scanner(System.in);
-		//int count = 0; 
+		
+		//Change this condition to until we hit a number! do while? 
         while(sc.hasNextLine()){
             if(!sc.hasNextInt()){ 
             	String s = sc.nextLine(); 
@@ -57,43 +94,37 @@ public class ants {
             		char state = sc2.next().charAt(0);
                 	String actions = sc2.next();
                 	String result  = sc2.next();
-                   
-                //	System.out.println("Test: " + state + " " + actions + " " + result);
-
-               	 //  Gene gene = new Gene(s.charAt(0), s.substring(2,6), s.substring(6,11));
+                	
                 	Gene gene = new Gene(state, actions, result);
                	   	genes.add(gene);
             	}
-            	
             }else{ //If we find an integer, we use it as the number of moves we calculate. 
-            	// System.out.println(dna);
-                 calcMove(sc.nextInt());
+                int numMoves = sc.nextInt();
+            	calcMove(numMoves);
+                for (Gene i: genes){
+	     			System.out.println(i.currState + " " + i.actions + " " + i.nextStates);
+	     		}
+	     		System.out.println(numMoves);
+	     		System.out.println("# " + (int)loc.getX() + " "+ (int)loc.getY());
+	     	      
+     			
+	     		//Resetting variables... should we just be recalling the constructor?
+                 loc = new Point(0,0);
+	       	     visited = new HashMap<Point, Character>();
+	       	     lastDir = 0; //0 = north, 1= east, 2=south, 3=west
+	       	     genes = new ArrayList<Gene>(); //list of genes
              }             
-            //}else{
-                 //sc.nextLine();
-            //}
-        //    System.out.println("Count " + count);
-          //  count++; 
 		}
 		sc.close();          
-	}
+	}*/
 	
 		/*
 		 * Calculate the location in which we end up after stop number of moves 
 		 */
-       public void calcMove(int stop){
+       public static void calcMove(int numMoves){
             char state;
-         /*   Scanner scan = new Scanner(dna);
-            while(scan.hasNextLine()){ //scan each line of the DNA 
-            	String s = scan.nextLine();
-            	Gene gene = new Gene(s.charAt(0), s.substring(1,5), s.substring(5,9));
-            	genes.add(gene);
-            }
-            scan.close();*/
-            
-           //System.out.println("Initial location: " + loc);
-            
-            for(int i = 0; i < stop; i++){ //for each step we need to make 
+       
+            for(int i = 0; i < numMoves; i++){ //for each step we need to make 
                 if(visited.containsKey(loc)){ //if the location HAS been visited
                     state = visited.get(loc); //get the state of that location 
                     //System.out.println("visited");
@@ -104,28 +135,13 @@ public class ants {
                 //pass the state of the location to movement
                 movement(state);
             }
-
-            for (Gene i: genes){
-				System.out.println(i.currState + " " + i.actions + " " + i.nextStates);
-			}
-			System.out.println(stop);
-			System.out.println("# " + (int)loc.getX() + " "+ (int)loc.getY());
-		//	System.out.println();
-	       
-				
-		//Resetting?
-	   //   dna = "";
-	      loc = new Point(0,0);
-	      visited = new HashMap<Point, Character>();
-	      lastDir = 0; //0 = north, 1= east, 2=south, 3=west
-	      genes = new ArrayList<Gene>(); //list of genes
         }
        
        /*
         * This method takes in the state of the current location and finds the new state 
         * and which direction to move next. 
         */
-       public void movement(char state){  	   
+       public static void movement(char state){  	   
     	   //Find the gene that refers to this state of interest
     	   Gene g = new Gene();
     	   for(Gene x: genes){
@@ -168,7 +184,7 @@ public class ants {
         * as what state that gene refers to, what action to take and what the next state 
         * should be depending on the direction you have arrived from. 
         */
-       public class Gene{
+       public static class Gene{
     	   private char currState;
     	   private String actions;
     	   private String nextStates;
