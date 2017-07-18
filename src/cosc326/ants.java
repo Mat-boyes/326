@@ -102,6 +102,12 @@ public class ants {
 				System.out.println(stop);
 				System.out.println("# " + (int)loc.getX() + " "+ (int)loc.getY());
 				System.out.println();
+	       
+	      dna = "";
+	      loc = new Point(0,0);
+		visited = new HashMap<Point, Character>();
+		lastDir = 0; //0 = north, 1= east, 2=south, 3=west
+		genes = new ArrayList<Gene>(); //list of genes
         }
        
        /*
