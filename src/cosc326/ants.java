@@ -36,7 +36,9 @@ public class ants {
 		ants ant = new ants(); 
 		while(sc.hasNextLine()){
 			String s = sc.nextLine(), hold = "";
-			if(Character.isDigit(s.charAt(0))){ //If we scan in a number, we have finished scanning DNA for this scenario. 
+			if(s.equals("")){
+				ant = new ants();
+			}else if(Character.isDigit(s.charAt(0))){ //If we scan in a number, we have finished scanning DNA for this scenario. 
 				for(int i = 0; i < s.length(); i++){
 					hold += s.charAt(i);
 					
@@ -50,7 +52,7 @@ public class ants {
 	     		System.out.println("# " + (int)loc.getX() + " "+ (int)loc.getY());
 	     		System.out.println();
 	     		
-	     		ant = new ants(); //Reset the ant for a new scenario
+	     		 //Reset the ant for a new scenario
 			}
 			else if(!s.contains("#")){ //Ignore lines with # comments
         		Scanner sc2 = new Scanner(s);
