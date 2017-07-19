@@ -1,3 +1,5 @@
+//package ants;
+
 /*
  * Etude 1: Ants on a Plane
  * 
@@ -31,12 +33,15 @@ public class ants {
 	/*
 	 * Main method scans in input for the DNA of each ant scenario.   
 	 */
-	public static void main(String[]args){
+	public static void main(String[]args) throws FileNotFoundException{
+		//File myfile = new File("H:/326/326/Ants/src/ants/states2.txt");
+		//Scanner sc = new Scanner(myfile);
 		Scanner sc = new Scanner(System.in);
 		ants ant = new ants(); 
 		while(sc.hasNextLine()){
 			String s = sc.nextLine(), hold = "";
 			if(s.equals("")){
+				//System.out.println("this isnt working");
 				ant = new ants();
 			}else if(Character.isDigit(s.charAt(0))){ //If we scan in a number, we have finished scanning DNA for this scenario. 
 				for(int i = 0; i < s.length(); i++){
@@ -137,7 +142,8 @@ public class ants {
             }else{ //If going west
                 loc.translate(-1, 0);
                 lastDir = 3;
-            }      
+            } 
+				//System.out.println(loc.toString());
         }
         
        /*
