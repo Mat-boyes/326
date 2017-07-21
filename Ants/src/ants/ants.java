@@ -18,97 +18,104 @@ import java.util.*;
 
 public class ants {
     
-        private String dna;
-        private Point loc;
-        private HashMap<Point, Character> visited;
-        private int lastDir;
-        private ArrayList<Gene> genes;
+        private static Point loc;
+        private static HashMap<String, Character> visited;
+        private static int lastDir;
+        private static ArrayList<Gene> genes;
 
 	public ants(){
-		dna = "";
 		loc = new Point(0,0);
-		visited = new HashMap<Point, Character>();
+		visited = new HashMap<String, Character>();
 		lastDir = 0; //0 = north, 1= east, 2=south, 3=west
 		genes = new ArrayList<Gene>(); //list of genes
 	}
 	
 	/*
-	 * Main method creates instance of ants and calls the start method on it.  
+	 * Main method scans in input for the DNA of each ant scenario.   
 	 */
-	public static void main(String[]args){
-		new ants().start(); 
+	public static void main(String[]args) throws FileNotFoundException{
+		File myfile = new File("H:/326/326/Ants/src/ants/states.txt");
+		Scanner sc = new Scanner(myfile);
+		//Scanner sc = new Scanner(System.in);
+		ants ant = new ants(); 
+		while(sc.hasNextLine()){
+			String s = sc.nextLine(), hold = "";
+			if(s.equals("")){
+				//System.out.println("this isnt working");
+				ant = new ants();
+			}else if(Character.isDigit(s.charAt(0))){ //If we scan in a number, we have finished scanning DNA for this scenario. 
+				for(int i = 0; i < s.length(); i++){
+					hold += s.charAt(i);
+					
+				}
+				s = hold;
+				int numMoves = Integer.parseInt(s);  
+            	calcMove(numMoves);
+            	
+            	printGenes(); 
+	     		System.out.println(numMoves);
+	     		System.out.println("# " + (int)loc.getX() + " "+ (int)loc.getY());
+	     		System.out.println();
+	     		
+	     		 //Reset the ant for a new scenario
+			}
+			else if(!s.contains("#")){ //Ignore lines with # comments
+        		Scanner sc2 = new Scanner(s);
+        		char state = sc2.next().charAt(0);
+            	String actions = sc2.next();
+            	String result  = sc2.next();
+            	sc2.close();
+            	
+            	Gene gene = new Gene(state, actions, result); //Create a new gene
+           	   	genes.add(gene); //Add it to the DNA of this ant scenario
+        	}
+		}
+		sc.close();   
 	}
 	
 	/*
-	 * Start the program by scanning in input and calculating the final location of the ant. 
+	 * Prints the contents of an ant's genes. 
 	 */
-	public void start(){
-		Scanner sc = new Scanner(System.in);
-        while(sc.hasNextLine()){
-            if(!sc.hasNext("#")){
-                if(!sc.hasNextInt()){
-                	//TODO: double check this doesnt need to be hasNext
-                   for (int i = 0; i < 3; i++){ 
-                       dna += sc.next();
-                   }
-                   dna += "\n";
-                }else{ //If we find an integer, we use it as the number of moves we calculate. 
-                     calcMove(sc.nextInt());
-                 }             
-            }else{
-                 //sc.nextLine();
-            }
+	public static void printGenes(){
+		if(genes.isEmpty()){
+			System.out.println("No genes!");
 		}
-		sc.close();          
+		
+		 for (Gene i: genes){
+  			System.out.println(i.currState + " " + i.actions + " " + i.nextStates);
+  		}
 	}
-	
+
 		/*
 		 * Calculate the location in which we end up after stop number of moves 
 		 */
-       public void calcMove(int stop){
+       public static void calcMove(int numMoves){
             char state;
-            Scanner scan = new Scanner(dna);
-            while(scan.hasNextLine()){ //scan each line of the DNA 
-            	String s = scan.nextLine();
-            	Gene gene = new Gene(s.charAt(0), s.substring(1,5), s.substring(5,9));
-            	genes.add(gene);
-            }
-            scan.close();
-            
-           //System.out.println("Initial location: " + loc);
-            
-            for(int i = 0; i < stop; i++){ //for each step we need to make 
-                if(visited.containsKey(loc)){ //if the location HAS been visited
-                    state = visited.get(loc); //get the state of that location 
-                    //System.out.println("visited");
+       
+            for(int i = 0; i < numMoves; i++){ //for each step we need to make 
+					String location = Integer.toString(loc.x) + " " + Integer.toString(loc.y);
+                if(visited.containsKey(location)){ //if the location HAS been visited
+						 //System.out.println(visited.get(loc));
+                    state = visited.get(location); //get the state of that location 
+						  //System.out.println("visited " + i);
                 }else{//if it has NOT been visited
-                	state = (genes.get(0)).getCurrentState(); //Just use the first state
-                	//System.out.println("not visited");
+						 //System.out.println("not visited " + i);
+						 //System.out.println((genes.get(0)).getCurrentState());
+                	state = (genes.get(0)).currState; //Just use the first state
                 }
+					 //System.out.println(state);
                 //pass the state of the location to movement
                 movement(state);
+					 //System.out.println(visited.toString());
             }
-            
-				
-
-
-            //System.out.println(dna); //TODO: this needs to be spaced as input is. 
-            for (int i = 0; i < genes.size(); i++){
-					
-					System.out.println(genes.get(i).currState + " " + 
-							  genes.get(i).actions + " " + 
-							  genes.get(i).nextStates);
-				}
-				System.out.println(stop);
-				System.out.println("# " + (int)loc.getX() + " "+ (int)loc.getY());
-				System.out.println();
+				//System.out.println(visited.toString());
         }
        
        /*
         * This method takes in the state of the current location and finds the new state 
         * and which direction to move next. 
         */
-       public void movement(char state){  	   
+       public static void movement(char state){  	   
     	   //Find the gene that refers to this state of interest
     	   Gene g = new Gene();
     	   for(Gene x: genes){
@@ -118,10 +125,12 @@ public class ants {
     	   }
     	 
     	   char nextDirection = g.getAction(lastDir); //next direction to go
+			//System.out.println(lastDir);
     	   char newState = g.getNextState(lastDir); //new state of this location
-    	   
-           visited.put(loc, newState); //update this location to the new state in the hashmap
-           
+				
+			String location = Integer.toString(loc.x) + " " + Integer.toString(loc.y);
+           visited.put(location, newState); //update this location to the new state in the hashmap
+           //System.out.println( loc + " is at state: "+visited.get(loc));
         /* Debugging Info
          
            System.out.println("Arrived in direction "+ lastDir);
@@ -143,7 +152,8 @@ public class ants {
             }else{ //If going west
                 loc.translate(-1, 0);
                 lastDir = 3;
-            }      
+            } 
+				//System.out.println(loc.toString());
         }
         
        /*
@@ -151,7 +161,7 @@ public class ants {
         * as what state that gene refers to, what action to take and what the next state 
         * should be depending on the direction you have arrived from. 
         */
-       public class Gene{
+       public static class Gene{
     	   private char currState;
     	   private String actions;
     	   private String nextStates;
